@@ -44,6 +44,12 @@ var routes = Routes{
 		handlers.GetProduce,
 	},
 	Route{
+		"GetProduceByID",
+		"GET",
+		"/GetProduceByID",
+		handlers.GetProduceByID,
+	},
+	Route{
 		"PostProduce",
 		"POST",
 		"/PostProduce",
@@ -51,7 +57,7 @@ var routes = Routes{
 	},
 	Route{
 		"DeleteProduce",
-		"DELETE",
+		"GET",
 		"/DeleteProduce",
 		handlers.DeleteProduce,
 	},

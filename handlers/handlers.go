@@ -3,11 +3,11 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/kvincent2/SupermarketAPI/produce"
 	"html"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"github.com/kvincent2/SupermarketAPI/produce"
 	"os"
 	"strings"
 	//"sync"
@@ -25,6 +25,22 @@ func GetProduce (w http.ResponseWriter, r *http.Request) {
 	}
 	fmt.Fprintf(os.Stdout, "%s", arrayJSON)
 	fmt.Fprintf(w, "%s", arrayJSON)
+}
+
+func GetProduceByID (w http.ResponseWriter, r *http.Request) {
+	URLParams := r.URL.Query()
+	produceCode := URLParams["ProduceCode"][0]
+	array := produce.Array
+	for _,v := range array {
+		if v.ProduceCode == produceCode {
+			arrayJSON, err := json.MarshalIndent(v, "		", "		")
+			if err != nil {
+				log.Fatal("Cannot encode to JSON ", err)
+			}
+			fmt.Fprintf(os.Stdout, "%s", arrayJSON)
+			fmt.Fprintf(w, "%s", arrayJSON)
+		}
+	}
 }
 
 func PostProduce (w http.ResponseWriter, r *http.Request) {
@@ -56,7 +72,17 @@ func PostProduce (w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteProduce (w http.ResponseWriter, r *http.Request) {
+	deleteItem := r.URL.Query()
+	produceCode := deleteItem["ProduceCode"][0]
+	fmt.Println(produceCode)
 
+	for k, v := range produce.Array {
+		if v.ProduceCode == produceCode {
+			produce.Array = append(produce.Array[:k],produce.Array[k+1:]...)
+			fmt.Printf("Deleted ProduceCode : %s",v)
+			break
+		}
+	}
 }
 
 

@@ -1,9 +1,9 @@
 package produce
 
 type Produce struct {
-	Name        string  `json:"name"`
-	ProduceCode string  `json:"produceCode"`
-	UnitPrice   float64 `json:"unitPrice"`
+	Name        string  `json:"Name"`
+	ProduceCode string  `json:"ProduceCode"`
+	UnitPrice   float64 `json:"UnitPrice"`
 }
 
 
