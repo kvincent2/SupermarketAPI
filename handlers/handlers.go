@@ -19,6 +19,9 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 func GetProduce (w http.ResponseWriter, r *http.Request) {
 	array := produce.Array
+	if len(array) == 0 {
+		log.Fatal("No produce available!")
+	}
 	arrayJSON, err := json.MarshalIndent(array,"	", "	")
 	if err != nil {
 		log.Fatal("Cannot encode to JSON ", err)
@@ -39,7 +42,10 @@ func GetProduceByID (w http.ResponseWriter, r *http.Request) {
 			}
 			fmt.Fprintf(os.Stdout, "%s", arrayJSON)
 			fmt.Fprintf(w, "%s", arrayJSON)
+		} else {
+			log.Fatal("Produce not found!")
 		}
+
 	}
 }
 
@@ -81,7 +87,10 @@ func DeleteProduce (w http.ResponseWriter, r *http.Request) {
 			produce.Array = append(produce.Array[:k],produce.Array[k+1:]...)
 			fmt.Printf("Deleted ProduceCode : %s",v)
 			break
+		} else {
+			log.Fatal("Produce not found!")
 		}
+
 	}
 }
 
