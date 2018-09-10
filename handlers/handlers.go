@@ -22,7 +22,7 @@ func GetProduce (w http.ResponseWriter, r *http.Request) {
 	if len(array) == 0 {
 		log.Fatal("No produce available!")
 	}
-	arrayJSON, err := json.MarshalIndent(array,"	", "	")
+	arrayJSON, err := json.Marshal(array)
 	if err != nil {
 		log.Fatal("Cannot encode to JSON ", err)
 	}
@@ -35,18 +35,18 @@ func GetProduceByID (w http.ResponseWriter, r *http.Request) {
 	produceCode := URLParams["ProduceCode"][0]
 	array := produce.Array
 	for _,v := range array {
+		fmt.Println(v.ProduceCode, produceCode)
 		if v.ProduceCode == produceCode {
-			arrayJSON, err := json.MarshalIndent(v, "		", "		")
+			arrayJSON, err := json.Marshal(v)
 			if err != nil {
 				log.Fatal("Cannot encode to JSON ", err)
 			}
 			fmt.Fprintf(os.Stdout, "%s", arrayJSON)
 			fmt.Fprintf(w, "%s", arrayJSON)
-		} else {
-			log.Fatal("Produce not found!")
+			return
 		}
-
 	}
+	log.Fatal("Produce not found!")
 }
 
 func PostProduce (w http.ResponseWriter, r *http.Request) {
@@ -84,14 +84,13 @@ func DeleteProduce (w http.ResponseWriter, r *http.Request) {
 
 	for k, v := range produce.Array {
 		if v.ProduceCode == produceCode {
-			produce.Array = append(produce.Array[:k],produce.Array[k+1:]...)
-			fmt.Printf("Deleted ProduceCode : %s",v)
-			break
-		} else {
-			log.Fatal("Produce not found!")
+			produce.Array = append(produce.Array[:k], produce.Array[k+1:]...)
+			fmt.Printf("Deleted ProduceCode : %+v", v)
+			return
 		}
 
 	}
+	log.Fatal("Produce not found!")
 }
 
 

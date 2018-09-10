@@ -57,7 +57,7 @@ var routes = Routes{
 	},
 	Route{
 		"DeleteProduce",
-		"GET",
+		"DELETE",
 		"/DeleteProduce",
 		handlers.DeleteProduce,
 	},
