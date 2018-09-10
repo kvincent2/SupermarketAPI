@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/kvincent2/SupermarketAPI/produce"
+	"github.com/thedevsaddam/govalidator"
 	"html"
 	"io/ioutil"
 	"log"
@@ -54,15 +55,38 @@ func PostProduce (w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 	if err != nil {
 		log.Printf("Error reading body: %v", err)
-		http.Error(w, "can't read body", http.StatusBadRequest)
+		http.Error(w, "Can't read body", http.StatusBadRequest)
 		return
 	}
 	var newItem produce.Produce
 	//TODO Mutex Locking
 	//c.mux.Lock()
 
-	if err := json.Unmarshal(rbody, &newItem); err != nil {
-		panic(err)
+	//TODO Figure out struct validation. https://github.com/asaskevich/govalidator; focus on 'validate struct' function.
+	rules := govalidator.MapData{
+		"Name": []string{"required","regex:^[0-9A-Za-z]$"},
+		"ProduceCode":    []string{"required", "len:19", "regex:^([0-9A-Za-z]{4}-){3}[0-9A-Za-z]{4}$"},
+		"UnitPrice":      []string{"required"},
+	}
+
+	opts := govalidator.Options{
+		Request: r,
+		Data:    &newItem,
+		Rules:   rules,
+	}
+
+	v := govalidator.New(opts)
+	e := v.ValidateJSON()
+	fmt.Println(newItem) // your incoming JSON data in Go data struct
+
+	validationErr := map[string]interface{}{"validationError": e}
+	w.Header().Set("Content-type", "application/json")
+	if validationErr != nil {
+		//json.NewEncoder(w).Encode(validationErr)
+		fmt.Println(validationErr)
+	}
+	if JSONErr := json.Unmarshal(rbody, &newItem); err != nil {
+		http.Error(w, fmt.Sprintf("Can't read body. Error: %s",JSONErr), http.StatusBadRequest)
 	}
 
 	for _, item := range produce.Array {

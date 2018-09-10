@@ -25,12 +25,21 @@
   revision = "e3702bed27f0d39777b0b37b664b6280e8ef8fbf"
   version = "v1.6.2"
 
+[[projects]]
+  digest = "1:0a80463aafabdc9d78d451803b47db98fb453e212c8dde88cd54dfac4ac335e3"
+  name = "github.com/thedevsaddam/govalidator"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "95c9c9c4864288c985e32eb32025819dae495c66"
+  version = "v1.9.1"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
     "github.com/franela/goblin",
     "github.com/gorilla/mux",
+    "github.com/thedevsaddam/govalidator",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
