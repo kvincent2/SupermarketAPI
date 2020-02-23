@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"net/http"
 	"github.com/gorilla/mux"
 	"github.com/kvincent2/SupermarketAPI/handlers"
+	"net/http"
 )
 
 type Route struct {

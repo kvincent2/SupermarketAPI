@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/kvincent2/SupermarketAPI/produce"
 	"github.com/thedevsaddam/govalidator"
 	"html"
 	"io/ioutil"
@@ -11,6 +10,8 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/kvincent2/SupermarketAPI/produce"
 	//"sync"
 )
 
